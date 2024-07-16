@@ -1,17 +1,19 @@
-name: scp files  # name: Deploy nos sirve para indicar cómo se llama esta action
-on: [push]       # on: [push] quiere decir que se ejecutará siempre que hagamos push al repositorio
+name: scp files                           # name: Deploy nos sirve para indicar cómo se llama esta action
+on: [push]                                # on: [push] quiere decir que se ejecutará siempre que hagamos push al repositorio
 jobs:
   build:
     name: Build
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4 # uses: actions/checkout@master sirve para enviar el contenido de nuestro repositorio a el entorno de trabajo de GitHub, de modo que el workflow pueda acceder a nuestros archivos.
-    - name: copy file via ssh password # name: Copiar el contenido del repositorio con scp es el nombre de nuestra acción
-      uses: appleboy/scp-action@v0.1.7 # uses: appleboy/scp-action@master indica el código de la acción que hemos encontrado en el marketplace, que hace el trabajo duro para enviar los archivos por scp.
-      with: # with: sirve para indicar la configuración extra, en la que definimos dónde están los archivos de origen, que se van a llevar a producción y la carpeta del servidor donde los vamos a colocar.
-        host: ${{ secrets.HOST }}
-        username: ${{ secrets.FTP_USERNAME }}
-        password: ${{ secrets.SSHKEY }}
-        port: ${{ secrets.PORT }}
-        source: "tests/a.txt,tests/b.txt"
-        target: your_server_target_folder_path 
+      - uses: actions/checkout@v4         # uses: actions/checkout@master sirve para enviar el contenido de nuestro repositorio a el entorno de trabajo de GitHub, de modo que el workflow pueda acceder a nuestros archivos.
+      - name: copy file via ssh password  # name: Copiar el contenido del repositorio con scp es el nombre de nuestra acción
+        uses: appleboy/scp-action@v0.1.7  # uses: appleboy/scp-action@master indica el código de la acción que hemos encontrado en el marketplace, que hace el trabajo duro para enviar los archivos por scp.
+        env:                              # with: sirve para indicar la configuración extra, en la que definimos dónde están los archivos de origen, que se van a llevar a producción y la carpeta del servidor donde los vamos a colocar.
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.SSHKEY }}
+          port: ${{ secrets.PORT }}
+        with:
+          source: "./dist"
+          target: "/public_htm/vue/"
+          # strip_components: 1
