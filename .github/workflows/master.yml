@@ -10,14 +10,14 @@ jobs:
     steps:
     - name: 🚚 Get latest code
       uses: actions/checkout@v4
-    
-    - name: 📂 Sync files
-      uses: SamKirkland/FTP-Deploy-Action@v4.3.5
 
     - name: Debug Secrets
       run: echo "FTP_USERNAME is set to ${{ secrets.FTP_USERNAME }}" && echo "FTP_PASSWORD is set"
-    #   env:
-    #     FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
-    #     FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
 
-  
+    - name: Setup FTP Deploy
+      uses: SamKirkland/FTP-Deploy-Action@4.1.0
+      with:
+        ftp-server: ftp://ftp.sangut.site
+        ftp-username: ${{ secrets.FTP_USERNAME }}
+        ftp-password: ${{ secrets.FTP_PASSWORD }}
+        local-dir: ./dist
