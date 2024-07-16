@@ -9,10 +9,10 @@ jobs:
       - name: copy file via ssh password  # name: Copiar el contenido del repositorio con scp es el nombre de nuestra acción
         uses: appleboy/scp-action@master  # uses: appleboy/scp-action@master indica el código de la acción que hemos encontrado en el marketplace, que hace el trabajo duro para enviar los archivos por scp.
         env:                              # with: sirve para indicar la configuración extra, en la que definimos dónde están los archivos de origen, que se van a llevar a producción y la carpeta del servidor donde los vamos a colocar.
-          host: ${{ secrets.HOST }}
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.SSHKEY }}
-          port: ${{ secrets.PORT }}
+          HOST: ${{ secrets.HOST }}
+          USERNAME: ${{ secrets.FTP_USERNAME }}
+          KEY: ${{ secrets.SSHKEY }}
+          PORT: ${{ secrets.PORT }}
         with:
           source: "./dist"
           target: "/public_htm/vue/"
