@@ -23,11 +23,14 @@ jobs:
       - name: Build project
         run: npm run build
 
-      - name: Setup FTP Deply
-        uses: SamKirkland/FTP-Deploy-Action@4.1.0
-        with:
-          ftp-server: ftp.sangut.site
-          ftp-username: ${{ secrets.FTP_USERNAME }}
-          ftp-password: ${{ secrets.FTP_PASSWORD }}
-          local-dir: ./dist # Ajusta esto al diretorio que contiene los archivos  a desplegar
+      - name: Debug Secrets
+        run: echo "FTP_USERNAME is set" && echo "FTP_PASSWORD is set"
+
+      # - name: Setup FTP Deply
+      #   uses: SamKirkland/FTP-Deploy-Action@4.1.0
+      #   with:
+      #     ftp-server: ftp.sangut.site
+      #     ftp-username: ${{ secrets.FTP_USERNAME }}
+      #     ftp-password: ${{ secrets.FTP_PASSWORD }}
+      #     local-dir: ./dist # Ajusta esto al diretorio que contiene los archivos  a desplegar
 
