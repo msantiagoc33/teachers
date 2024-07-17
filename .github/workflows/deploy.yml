@@ -42,6 +42,5 @@ jobs:
             git pull
           EOF
 
-          
       - name: Clean up
         run: rm -rf ~/.ssh
