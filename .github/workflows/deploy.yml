@@ -40,4 +40,4 @@ jobs:
           EOF
 
       - name: Cleanup
-        run: rm -rf ~/.ssh
+        run: rm -rf ~/.ssh 
