@@ -7,7 +7,7 @@ on:
 jobs:
   run_pull:
     name: run pull
-    runs-on: ubuntu-latest 
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
@@ -15,24 +15,28 @@ jobs:
 
       - name: Create .ssh directory
         run: mkdir -p ~/.ssh
-    
+
       - name: Setup SSH private key
         run: |
           printf "%s" "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
-    
+
       - name: Add SSH host key
-        run: 
+        run:
           ssh-keyscan -H -p 27015 ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
-          chmod 600 ~/.ssh/known_hosts 
+          chmod 600 ~/.ssh/known_hosts
 
       - name: Connect and pull
-        run: 
-          ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "MAIN_BRANCH }} && git pull"
-          cd ${{ secrets.WORK_DIR }} &&
-          git checkout ${{ secrets.MAIN_BRANCH }} &&
-          git pull"
+        run: |
+          ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "\
+            git fetch origin && \
+            git checkout ${{ secrets.MAIN_BRANCH }} && \
+            git reset --hard origin/${{ secrets.MAIN_BRANCH }} && \
+            git pull \
+          "
+          cd ${{ secrets.WORK_DIR }} && \
+          git checkout ${{ secrets.MAIN_BRANCH }} && \
+          git pull
 
       - name: Cleanup
-        run: rm -rf ~/.ssh    
-
+        run: rm -rf ~/.ssh
