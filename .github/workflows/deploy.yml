@@ -22,8 +22,10 @@ jobs:
           chmod 600 ~/.ssh/id_rsa
     
       - name: Add SSH host key
-        run: ssh-keyscan -H ${{ secrets.SSH_HOST }} > ~/.ssh/known_hosts
-        
+        run: 
+          ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
+          chmod 600 ~/.ssh/known_hosts
+
       - name: Connect and pull
         run: 
           ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "MAIN_BRANCH }} && git pull"
