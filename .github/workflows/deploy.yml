@@ -32,9 +32,6 @@ jobs:
           ssh -o StrictHostKeyChecking=no -p 27015 -v ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'EOF'
             set -e
             echo "Connected to the remote server."
-            if [ ! -d "${{ secrets.WORK_DIR }}" ]; then
-            mkdir -p ${{ secrets.WORK_DIR }}
-            fi
             cd ${{ secrets.WORK_DIR }}
             git fetch origin
             git checkout ${{ secrets.MAIN_BRANCH }}
