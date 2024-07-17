@@ -28,15 +28,16 @@ jobs:
 
       - name: Connect and pull
         run: |
-          ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "\
-            git fetch origin && \
-            git checkout ${{ secrets.MAIN_BRANCH }} && \
-            git reset --hard origin/${{ secrets.MAIN_BRANCH }} && \
-            git pull \
-          "
-          cd ${{ secrets.WORK_DIR }} && \
-          git checkout ${{ secrets.MAIN_BRANCH }} && \
-          git pull
+          echo "Attempting SSH connection..."
+          ssh -o StrictHostKeyChecking=no -v ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'EOF'
+            set -e
+            echo "Connected to the remote server."
+            cd ${{ secrets.WORK_DIR }}
+            git fetch origin
+            git checkout ${{ secrets.MAIN_BRANCH }}
+            git reset --hard origin/${{ secrets.MAIN_BRANCH }}
+            git pull
+          EOF
 
       - name: Cleanup
         run: rm -rf ~/.ssh
