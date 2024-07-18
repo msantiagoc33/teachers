@@ -39,6 +39,11 @@ jobs:
             mkdir -p "$WORK_DIR"
             fi
             cd "$WORK_DIR"
+            if [ ! -d ".git" ]; then
+              echo "Initializing a new git repository."
+              git init
+              git remote add origin https://github.com/msantiagoc33/teachers.git
+            fi
             git fetch origin
             git checkout master
             git reset --hard origin/master
