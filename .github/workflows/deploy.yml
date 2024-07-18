@@ -29,22 +29,29 @@ jobs:
       - name: Connect and pull
         run: |
           echo "Attempting SSH connection..."
-          # quitar -v cuando todo vaya bien, es solo para diagnostico
-          # ssh -o StrictHostKeyChecking=no -p 27015 -v ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'EOF'
             ssh -o StrictHostKeyChecking=no -p 27015 ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'EOF'
             set -e
             echo "Connected to the remote server."
-            WORK_DIR="/home/${{ secrets.SSH_USER }}/public_html/teachers"
-            if [ ! -d "$WORK_DIR" ]; then
-            mkdir -p "$WORK_DIR"
+
+          # Creo la variable WORK_DIRECTORY que contiene la ruta al directorio teachers  
+            WORK_DIRECTORY="/home/${{ secrets.SSH_USER }}/${{ secrets.WORK_DIR }}"
+
+          # Compruebo si existe dicha rura, si no existe la creo  
+            if [ ! -d "$WORK_DIRECTORY" ]; then
+            mkdir -p "$WORK_DIRECTORY"
             fi
-            cd "$WORK_DIR"
+            cd "$WORK_DIRECTORY"
+
+          # Comprueba si el directorio git no existe, si es asi la inicializa y se agrega el remoto 
             if [ ! -d ".git" ]; then
               echo "Initializing a new git repository."
               git init
-              git remote add origin https://github.com/msantiagoc33/teachers.git
+              git remote add origin ${{ secrets.REPO_ORIGIN }}
             fi
+
+          # Descarga todos los cambios desde el repositorio remoto origin, repositorio principal  
             git fetch origin
+            
             git checkout master
             git reset --hard origin/master
             git pull origin master
