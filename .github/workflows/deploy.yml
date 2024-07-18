@@ -56,6 +56,9 @@ jobs:
           # Comprueba si el directorio git no existe, si es asi la inicializa y se agrega el remoto 
             if [ ! -d ".git" ]; then
               echo "Initializing a new git repository."
+              git reset --hard
+              git clean -fdx
+            else
               git init
               git remote add origin ${{ secrets.REPO_ORIGIN }}
             fi
